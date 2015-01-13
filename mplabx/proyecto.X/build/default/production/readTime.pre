@@ -5887,6 +5887,7 @@ void x_delay_ms(int x);
 # 12 "uartFunct.h"
 void init_UART();
 void uart_isr();
+void putiUSART(char *data);
 
 # 12 "gyro.h"
 void I2C_read_byte_gyro(unsigned char reg,unsigned char *rdptr);
@@ -5894,6 +5895,7 @@ void I2C_read_data_gyro(unsigned char reg,unsigned char *rdptr);
 void I2C_turn_on_gyro(void);
 void I2C_write_reg_gyro(unsigned char reg, unsigned char valor);
 void init_GYRO(void);
+void stop_GYRO();
 
 # 12 "i2cFunct.h"
 void I2C_open(unsigned char sync_mode, unsigned char slew, unsigned char baud_clock);
@@ -5915,61 +5917,35 @@ void I2C_turn_on_acc(unsigned char mode,unsigned char data_rate,unsigned char fu
 void I2C_turn_on_mag(unsigned char data_rate,unsigned char mode);
 void init_ACC();
 void init_MAG();
+void stop_ACC();
+void stop_MAG();
 
 # 13 "readTime.h"
 void timer0_isr(void);
 void startTimer(void);
 void endTimer(void);
-int gets(void);
-int getms(void);
-void sets(int seg);
-void setms(int ms);
 
 # 3 "readTime.c"
-unsigned int segundos, milisegundos,microsegundos;
+unsigned int timer0 = 59536;
 
-
-unsigned int timer0 = 65416;
-
-# 12
+# 11
 void timer0_isr(){
 INTCONbits.TMR0IF = 0;
 WriteTimer0(timer0);
 return;
 }
 
-# 25
+# 24
 void startTimer(){
-segundos = 0;
-milisegundos = 0;
 INTCONbits.GIE =1;
 INTCONbits.PEIE = 1;
 INTCONbits.TMR0IE = 1;
-
-
 OpenTimer0(0b11111111&0b10111111&0b11011111&0b11111111);
 WriteTimer0(timer0);
 }
 
-# 40
+# 35
 void endTimer(){
 CloseTimer0();
-}
-
-# 47
-int gets(){
-return segundos;
-}
-
-# 54
-int getms(){
-return milisegundos;
-}
-
-void sets(int seg){
-segundos = seg;
-}
-void setms(int ms){
-milisegundos = ms;
 }
 

@@ -11,6 +11,7 @@
 #include "main.h"
 void init_UART();
 void uart_isr();
+void putiUSART(char *data);
 
 #ifdef	__cplusplus
 extern "C" {

@@ -1,17 +1,16 @@
 #include "readTime.h"
 
-unsigned int segundos, milisegundos,microsegundos;
-//unsigned int timer0=65160; //valor del timer0 para que la interrupción salte cada milisegundo
-//unsigned int timer0=5536;
-unsigned int timer0 = 65416;
+unsigned int timer0 = 59536;//Valor de carga del timer0 para interrupción cada 500us
+//unsigned int timer0 = 53536;//1ms
+//unsigned int timer0 = 5536;
 //rutina de interrupción
 /*
- * La interrupción salta cada 1e-4 segundos,restaura el valor del timer0
+ * La interrupción salta cada 500us segundos,restaura el valor del timer0
  */
 
 void timer0_isr(){
     INTCONbits.TMR0IF = LOW; //Baja el flag de la interrupción
-    WriteTimer0(timer0);
+    WriteTimer0(timer0);//Carga el timer0
     return;
 }
   /*
@@ -23,13 +22,9 @@ void timer0_isr(){
    * interrupción salte cada milisegundo
    */
   void startTimer(){
-      segundos = 0;
-      milisegundos = 0;
-      INTCONbits.GIE =1; //Interrupciones globales (y alta prioridad)
-      INTCONbits.PEIE = 1; //Interrupciones perifericos (y baja prioridad)
+      INTCONbits.GIE =1; //Interrupciones globales
+      INTCONbits.PEIE = 1; //Interrupciones perifericos
       INTCONbits.TMR0IE = 1; //Interrupciones timer 0
-
-      //1e-4 seg
       OpenTimer0(TIMER_INT_ON&T0_16BIT&T0_SOURCE_INT&T0_PS_1_1);
       WriteTimer0(timer0);
   }
@@ -40,27 +35,6 @@ void timer0_isr(){
   void endTimer(){
       CloseTimer0();
   }
-
-  /*
-   * Devuelve el valor de los segundos
-   */
-  int gets(){
-      return segundos;
-  }
-
-  /*
-   * Devuelve el valor de los milisegundos
-   */
-   int getms(){
-      return milisegundos;
-  }
-
-   void sets(int seg){
-       segundos = seg;
-   }
-   void setms(int ms){
-       milisegundos = ms;
-   }
 
 
 

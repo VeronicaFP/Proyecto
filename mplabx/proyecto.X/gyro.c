@@ -118,3 +118,7 @@ void I2C_write_reg_gyro(unsigned char reg, unsigned char valor){
 void init_GYRO(){
     I2C_turn_on_gyro();
 }
+
+void stop_GYRO(){
+    I2C_write_reg_gyro(L3G4200D_CTRL_REG1,0);
+}

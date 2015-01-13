@@ -5888,10 +5888,6 @@ void x_delay_ms(int x);
 void timer0_isr(void);
 void startTimer(void);
 void endTimer(void);
-int gets(void);
-int getms(void);
-void sets(int seg);
-void setms(int ms);
 
 # 12 "gyro.h"
 void I2C_read_byte_gyro(unsigned char reg,unsigned char *rdptr);
@@ -5899,6 +5895,7 @@ void I2C_read_data_gyro(unsigned char reg,unsigned char *rdptr);
 void I2C_turn_on_gyro(void);
 void I2C_write_reg_gyro(unsigned char reg, unsigned char valor);
 void init_GYRO(void);
+void stop_GYRO();
 
 # 12 "i2cFunct.h"
 void I2C_open(unsigned char sync_mode, unsigned char slew, unsigned char baud_clock);
@@ -5920,10 +5917,13 @@ void I2C_turn_on_acc(unsigned char mode,unsigned char data_rate,unsigned char fu
 void I2C_turn_on_mag(unsigned char data_rate,unsigned char mode);
 void init_ACC();
 void init_MAG();
+void stop_ACC();
+void stop_MAG();
 
 # 12 "uartFunct.h"
 void init_UART();
 void uart_isr();
+void putiUSART(char *data);
 
 # 2 "uartFunct.c"
 int CaracterRx = 0;
@@ -5942,15 +5942,20 @@ PIE1bits.RCIE = 1;
 void uart_isr(){
 PIR1bits.RCIF=0;
 CaracterRx = ReadUSART();
-WriteUSART(CaracterRx);
 while((!TXSTAbits.TRMT));
 if (CaracterRx == 83){
 startTimer();
-PORTCbits.RC1=~PORTCbits.RC1;;
 }else if(CaracterRx == 88){
 endTimer();
-PORTCbits.RC0=~PORTCbits.RC0;;
 }
 
+}
+
+void putiUSART(char *data){
+while((!TXSTAbits.TRMT));
+WriteUSART(*data);
+*data--;
+while((!TXSTAbits.TRMT));
+WriteUSART(*data);
 }
 

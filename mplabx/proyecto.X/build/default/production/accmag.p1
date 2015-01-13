@@ -4525,18 +4525,16 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;auxFunct.h: 11: void x_delay_ms(int x);
 [; ;uartFunct.h: 12: void init_UART();
 [; ;uartFunct.h: 13: void uart_isr();
+[; ;uartFunct.h: 14: void putiUSART(char *data);
 [; ;readTime.h: 13: void timer0_isr(void);
 [; ;readTime.h: 14: void startTimer(void);
 [; ;readTime.h: 15: void endTimer(void);
-[; ;readTime.h: 16: int gets(void);
-[; ;readTime.h: 17: int getms(void);
-[; ;readTime.h: 18: void sets(int seg);
-[; ;readTime.h: 19: void setms(int ms);
 [; ;gyro.h: 12: void I2C_read_byte_gyro(unsigned char reg,unsigned char *rdptr);
 [; ;gyro.h: 13: void I2C_read_data_gyro(unsigned char reg,unsigned char *rdptr);
 [; ;gyro.h: 14: void I2C_turn_on_gyro(void);
 [; ;gyro.h: 15: void I2C_write_reg_gyro(unsigned char reg, unsigned char valor);
 [; ;gyro.h: 16: void init_GYRO(void);
+[; ;gyro.h: 17: void stop_GYRO();
 [; ;i2cFunct.h: 12: void I2C_open(unsigned char sync_mode, unsigned char slew, unsigned char baud_clock);
 [; ;i2cFunct.h: 13: void I2C_send(unsigned char reg);
 [; ;i2cFunct.h: 14: void init_I2C();
@@ -4552,6 +4550,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;accmag.h: 74: void I2C_turn_on_mag(unsigned char data_rate,unsigned char mode);
 [; ;accmag.h: 75: void init_ACC();
 [; ;accmag.h: 76: void init_MAG();
+[; ;accmag.h: 77: void stop_ACC();
+[; ;accmag.h: 78: void stop_MAG();
 "9 accmag.c
 [v _I2C_write_reg_acc `(v ~T0 @X0 1 ef2`uc`uc ]
 {
@@ -5062,4 +5062,33 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;accmag.c: 269: }
 "269
 [e :UE 652 ]
+}
+"270
+[v _stop_ACC `(v ~T0 @X0 1 ef ]
+{
+[; ;accmag.c: 270: void stop_ACC(){
+[e :U _stop_ACC ]
+[f ]
+[; ;accmag.c: 271: I2C_write_reg_acc(0x20,0);
+"271
+[e ( _I2C_write_reg_acc (2 , -> -> 32 `i `uc -> -> 0 `i `uc ]
+[; ;accmag.c: 272: }
+"272
+[e :UE 653 ]
+}
+"273
+[v _stop_MAG `(v ~T0 @X0 1 ef ]
+{
+[; ;accmag.c: 273: void stop_MAG(){
+[e :U _stop_MAG ]
+[f ]
+[; ;accmag.c: 274: I2C_write_reg_mag(0x00,0);
+"274
+[e ( _I2C_write_reg_mag (2 , -> -> 0 `i `uc -> -> 0 `i `uc ]
+[; ;accmag.c: 275: I2C_write_reg_mag(0X02,0);
+"275
+[e ( _I2C_write_reg_mag (2 , -> -> 2 `i `uc -> -> 0 `i `uc ]
+[; ;accmag.c: 276: }
+"276
+[e :UE 654 ]
 }

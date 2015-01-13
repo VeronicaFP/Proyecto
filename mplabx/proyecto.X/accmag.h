@@ -74,6 +74,8 @@ void I2C_turn_on_acc(unsigned char mode,unsigned char data_rate,unsigned char fu
 void I2C_turn_on_mag(unsigned char data_rate,unsigned char mode);
 void init_ACC();
 void init_MAG();
+void stop_ACC();
+void stop_MAG();
 
 #ifdef	__cplusplus
 extern "C" {

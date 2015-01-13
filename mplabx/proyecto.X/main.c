@@ -12,7 +12,10 @@ signed int acc_x, acc_y, acc_z;
 signed int gyr_x, gyr_y, gyr_z;
 char buf[10];
 char enter[] = "\n";
-char mid[] = " ";
+char mid[] = "+";
+char x[] = "X", y[] = "Y", z[] = "Z";
+char start[] = "#";
+char end[] = "~";
 
 /*
  *
@@ -43,28 +46,60 @@ void main() {
 
 }
 
+void putintUSART( char *data)
+{
+    while(BusyUSART());
+    putcUSART(*(data+1));
+    while(BusyUSART());
+    putcUSART(*data);
+
+}
+
 void imprimir() {
+    while(BusyUSART());
+    WriteUSART(35);
+    while(BusyUSART());
+    WriteUSART(88);
+    while(BusyUSART());
+    itoa(buf, acc_x, 10);
+    putsUSART(&buf);
+    //putintUSART(&acc_x);
+    while(BusyUSART());
+    WriteUSART(43);
+    while(BusyUSART());
+    WriteUSART(89);
+    while(BusyUSART());
+    //putintUSART(&acc_y);
+    itoa(buf, acc_y, 10);
+    putsUSART(&buf);
+    while(BusyUSART());
+    WriteUSART(43);
+    while(BusyUSART());
+    WriteUSART(90);
+    while(BusyUSART());
+    //putintUSART(&acc_z);
+    itoa(buf, acc_z, 10);
+    putsUSART(&buf);
+    while(BusyUSART());
+    WriteUSART(43);
+    while(BusyUSART());
+    WriteUSART(33);
     //itoa(buf, temperature, 10);
     //  putsUSART(&buf);
     //  putsUSART(&mid);
-    itoa(buf, acc_x, 10);
-    //putsUSART(&buf);
+    //putsUSART(&start);
+    //itoa(buf, acc_x, 10);
+    //putintUSART(&acc_x);
     //putsUSART(&mid);
     //itoa(buf, acc_y, 10);
     //putsUSART(&buf);
     //putsUSART(&mid);
     //itoa(buf, acc_z, 10);
-    //    putsUSART(&buf);
-    //    putsUSART(&mid);
-    //    itoa(buf, gyr_x, 10);
-    //    putsUSART(&buf);
-    //    putsUSART(&mid);
-    //    itoa(buf, gyr_y, 10);
-    //    putsUSART(&buf);
-    //    putsUSART(&mid);
-    //    itoa(buf, gyr_z, 10);
-    putsUSART(&buf);
-    putsUSART(&enter);
+    //putsUSART(&buf);
+    //putsUSART(&mid);
+    //putsUSART(&end);
+    //putsUSART(&enter);
+
 }
 
 void interrupt Interruption() {

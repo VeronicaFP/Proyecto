@@ -267,3 +267,10 @@ void init_ACC(){
 void init_MAG(){
     I2C_turn_on_mag(M220, CONTINUOUS_CONVERSION_MODE);
 }
+void stop_ACC(){
+    I2C_write_reg_acc(LSM303DLM_CTRL_REG1_A,0);
+}
+void stop_MAG(){
+    I2C_write_reg_mag(LSM303DLM_CRA_REG_M,0);
+    I2C_write_reg_mag(LSM303DLM_MR_REG_M,0);
+}

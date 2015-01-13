@@ -95,38 +95,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _PIR1bits `VS289 ~T0 @X0 0 e@3998 ]
 "596 C:\Program Files (x86)\Microchip\xc8\v1.32\include\plib\usart.h
 [v _ReadUSART `(uc ~T0 @X0 0 ef ]
-"597
-[v _WriteUSART `(v ~T0 @X0 0 ef1`uc ]
 "14 readTime.h
 [v _startTimer `(v ~T0 @X0 0 ef ]
-"2647 C:\Program Files (x86)\Microchip\xc8\v1.32\include\pic18f2550.h
-[s S198 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S198 . RC0 RC1 RC2 . RC4 RC5 RC6 RC7 ]
-"2657
-[s S199 :1 `uc 1 :1 `uc 1 :1 `uc 1 :3 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S199 . T1OSO T1OSI CCP1 . TX RX ]
-"2665
-[s S200 :1 `uc 1 :1 `uc 1 :1 `uc 1 :3 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S200 . T13CKI . P1A . CK DT ]
-"2673
-[s S201 :1 `uc 1 :1 `uc 1 ]
-[n S201 . . CCP2 ]
-"2677
-[s S202 :2 `uc 1 :1 `uc 1 ]
-[n S202 . . PA1 ]
-"2681
-[s S203 :1 `uc 1 :1 `uc 1 ]
-[n S203 . . PA2 ]
-"2685
-[s S204 :3 `uc 1 :1 `uc 1 ]
-[n S204 . . RC3 ]
-"2646
-[u S197 `S198 1 `S199 1 `S200 1 `S201 1 `S202 1 `S203 1 `S204 1 ]
-[n S197 . . . . . . . . ]
-"2690
-[v _PORTCbits `VS197 ~T0 @X0 0 e@3970 ]
-"15 readTime.h
+"15
 [v _endTimer `(v ~T0 @X0 0 ef ]
+"597 C:\Program Files (x86)\Microchip\xc8\v1.32\include\plib\usart.h
+[v _WriteUSART `(v ~T0 @X0 0 ef1`uc ]
 [; ;stdlib.h: 4: typedef int ptrdiff_t;
 [; ;stdlib.h: 5: typedef unsigned size_t;
 [; ;stdlib.h: 6: typedef unsigned short wchar_t;
@@ -4636,15 +4610,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;readTime.h: 13: void timer0_isr(void);
 [; ;readTime.h: 14: void startTimer(void);
 [; ;readTime.h: 15: void endTimer(void);
-[; ;readTime.h: 16: int gets(void);
-[; ;readTime.h: 17: int getms(void);
-[; ;readTime.h: 18: void sets(int seg);
-[; ;readTime.h: 19: void setms(int ms);
 [; ;gyro.h: 12: void I2C_read_byte_gyro(unsigned char reg,unsigned char *rdptr);
 [; ;gyro.h: 13: void I2C_read_data_gyro(unsigned char reg,unsigned char *rdptr);
 [; ;gyro.h: 14: void I2C_turn_on_gyro(void);
 [; ;gyro.h: 15: void I2C_write_reg_gyro(unsigned char reg, unsigned char valor);
 [; ;gyro.h: 16: void init_GYRO(void);
+[; ;gyro.h: 17: void stop_GYRO();
 [; ;i2cFunct.h: 12: void I2C_open(unsigned char sync_mode, unsigned char slew, unsigned char baud_clock);
 [; ;i2cFunct.h: 13: void I2C_send(unsigned char reg);
 [; ;i2cFunct.h: 14: void init_I2C();
@@ -4660,8 +4631,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;accmag.h: 74: void I2C_turn_on_mag(unsigned char data_rate,unsigned char mode);
 [; ;accmag.h: 75: void init_ACC();
 [; ;accmag.h: 76: void init_MAG();
+[; ;accmag.h: 77: void stop_ACC();
+[; ;accmag.h: 78: void stop_MAG();
 [; ;uartFunct.h: 12: void init_UART();
 [; ;uartFunct.h: 13: void uart_isr();
+[; ;uartFunct.h: 14: void putiUSART(char *data);
 "2 uartFunct.c
 [v _CaracterRx `i ~T0 @X0 1 e ]
 [i _CaracterRx
@@ -4720,45 +4694,70 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;uartFunct.c: 17: CaracterRx = ReadUSART();
 "17
 [e = _CaracterRx -> ( _ReadUSART ..  `i ]
-[; ;uartFunct.c: 18: WriteUSART(CaracterRx);
+[; ;uartFunct.c: 18: while((!TXSTAbits.TRMT));
 "18
-[e ( _WriteUSART (1 -> _CaracterRx `uc ]
-[; ;uartFunct.c: 19: while((!TXSTAbits.TRMT));
-"19
 [e $U 546  ]
 [e :U 547 ]
 [e :U 546 ]
 [e $ ! != -> . . _TXSTAbits 0 1 `i -> -> -> 0 `i `Vuc `i 547  ]
 [e :U 548 ]
-[; ;uartFunct.c: 20: if (CaracterRx == 83){
-"20
+[; ;uartFunct.c: 19: if (CaracterRx == 83){
+"19
 [e $ ! == _CaracterRx -> 83 `i 549  ]
 {
-[; ;uartFunct.c: 21: startTimer();
-"21
+[; ;uartFunct.c: 20: startTimer();
+"20
 [e ( _startTimer ..  ]
-[; ;uartFunct.c: 22: PORTCbits.RC1=~PORTCbits.RC1;;
-"22
-[e = . . _PORTCbits 0 1 -> ~ -> . . _PORTCbits 0 1 `i `uc ]
-"23
+"21
 }
-[; ;uartFunct.c: 23: }else if(CaracterRx == 88){
+[; ;uartFunct.c: 21: }else if(CaracterRx == 88){
 [e $U 550  ]
 [e :U 549 ]
 [e $ ! == _CaracterRx -> 88 `i 551  ]
 {
-[; ;uartFunct.c: 24: endTimer();
-"24
+[; ;uartFunct.c: 22: endTimer();
+"22
 [e ( _endTimer ..  ]
-[; ;uartFunct.c: 25: PORTCbits.RC0=~PORTCbits.RC0;;
-"25
-[e = . . _PORTCbits 0 0 -> ~ -> . . _PORTCbits 0 0 `i `uc ]
-"26
+"23
 }
 [e :U 551 ]
-"28
+"25
 [e :U 550 ]
-[; ;uartFunct.c: 26: }
-[; ;uartFunct.c: 28: }
+[; ;uartFunct.c: 23: }
+[; ;uartFunct.c: 25: }
 [e :UE 545 ]
+}
+"27
+[v _putiUSART `(v ~T0 @X0 1 ef1`*uc ]
+{
+[; ;uartFunct.c: 27: void putiUSART(char *data){
+[e :U _putiUSART ]
+[v _data `*uc ~T0 @X0 1 r1 ]
+[f ]
+[; ;uartFunct.c: 28: while((!TXSTAbits.TRMT));
+"28
+[e $U 553  ]
+[e :U 554 ]
+[e :U 553 ]
+[e $ ! != -> . . _TXSTAbits 0 1 `i -> -> -> 0 `i `Vuc `i 554  ]
+[e :U 555 ]
+[; ;uartFunct.c: 29: WriteUSART(*data);
+"29
+[e ( _WriteUSART (1 *U _data ]
+[; ;uartFunct.c: 30: *data--;
+"30
+[e *U -- _data * -> -> 1 `i `x -> -> # *U _data `i `x ]
+[; ;uartFunct.c: 31: while((!TXSTAbits.TRMT));
+"31
+[e $U 556  ]
+[e :U 557 ]
+[e :U 556 ]
+[e $ ! != -> . . _TXSTAbits 0 1 `i -> -> -> 0 `i `Vuc `i 557  ]
+[e :U 558 ]
+[; ;uartFunct.c: 32: WriteUSART(*data);
+"32
+[e ( _WriteUSART (1 *U _data ]
+[; ;uartFunct.c: 33: }
+"33
+[e :UE 552 ]
 }

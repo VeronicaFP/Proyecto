@@ -4533,11 +4533,13 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;auxFunct.h: 11: void x_delay_ms(int x);
 [; ;uartFunct.h: 12: void init_UART();
 [; ;uartFunct.h: 13: void uart_isr();
+[; ;uartFunct.h: 14: void putiUSART(char *data);
 [; ;gyro.h: 12: void I2C_read_byte_gyro(unsigned char reg,unsigned char *rdptr);
 [; ;gyro.h: 13: void I2C_read_data_gyro(unsigned char reg,unsigned char *rdptr);
 [; ;gyro.h: 14: void I2C_turn_on_gyro(void);
 [; ;gyro.h: 15: void I2C_write_reg_gyro(unsigned char reg, unsigned char valor);
 [; ;gyro.h: 16: void init_GYRO(void);
+[; ;gyro.h: 17: void stop_GYRO();
 [; ;i2cFunct.h: 12: void I2C_open(unsigned char sync_mode, unsigned char slew, unsigned char baud_clock);
 [; ;i2cFunct.h: 13: void I2C_send(unsigned char reg);
 [; ;i2cFunct.h: 14: void init_I2C();
@@ -4553,140 +4555,71 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;accmag.h: 74: void I2C_turn_on_mag(unsigned char data_rate,unsigned char mode);
 [; ;accmag.h: 75: void init_ACC();
 [; ;accmag.h: 76: void init_MAG();
+[; ;accmag.h: 77: void stop_ACC();
+[; ;accmag.h: 78: void stop_MAG();
 [; ;readTime.h: 13: void timer0_isr(void);
 [; ;readTime.h: 14: void startTimer(void);
 [; ;readTime.h: 15: void endTimer(void);
-[; ;readTime.h: 16: int gets(void);
-[; ;readTime.h: 17: int getms(void);
-[; ;readTime.h: 18: void sets(int seg);
-[; ;readTime.h: 19: void setms(int ms);
 "3 readTime.c
-[v _segundos `ui ~T0 @X0 1 e ]
-[v _milisegundos `ui ~T0 @X0 1 e ]
-[v _microsegundos `ui ~T0 @X0 1 e ]
-[; ;readTime.c: 3: unsigned int segundos, milisegundos,microsegundos;
-"6
 [v _timer0 `ui ~T0 @X0 1 e ]
 [i _timer0
--> -> 65416 `l `ui
+-> -> 59536 `l `ui
 ]
-[; ;readTime.c: 6: unsigned int timer0 = 65416;
-"12
+[; ;readTime.c: 3: unsigned int timer0 = 59536;
+"11
 [v _timer0_isr `(v ~T0 @X0 1 ef ]
 {
-[; ;readTime.c: 12: void timer0_isr(){
+[; ;readTime.c: 11: void timer0_isr(){
 [e :U _timer0_isr ]
 [f ]
-[; ;readTime.c: 13: INTCONbits.TMR0IF = 0;
-"13
+[; ;readTime.c: 12: INTCONbits.TMR0IF = 0;
+"12
 [e = . . _INTCONbits 0 2 -> -> 0 `i `uc ]
-[; ;readTime.c: 14: WriteTimer0(timer0);
-"14
+[; ;readTime.c: 13: WriteTimer0(timer0);
+"13
 [e ( _WriteTimer0 (1 _timer0 ]
-[; ;readTime.c: 15: return;
-"15
+[; ;readTime.c: 14: return;
+"14
 [e $UE 544  ]
-[; ;readTime.c: 16: }
-"16
+[; ;readTime.c: 15: }
+"15
 [e :UE 544 ]
 }
-"25
+"24
 [v _startTimer `(v ~T0 @X0 1 ef ]
 {
-[; ;readTime.c: 25: void startTimer(){
+[; ;readTime.c: 24: void startTimer(){
 [e :U _startTimer ]
 [f ]
-[; ;readTime.c: 26: segundos = 0;
-"26
-[e = _segundos -> -> 0 `i `ui ]
-[; ;readTime.c: 27: milisegundos = 0;
-"27
-[e = _milisegundos -> -> 0 `i `ui ]
-[; ;readTime.c: 28: INTCONbits.GIE =1;
-"28
+[; ;readTime.c: 25: INTCONbits.GIE =1;
+"25
 [e = . . _INTCONbits 1 7 -> -> 1 `i `uc ]
-[; ;readTime.c: 29: INTCONbits.PEIE = 1;
-"29
+[; ;readTime.c: 26: INTCONbits.PEIE = 1;
+"26
 [e = . . _INTCONbits 1 6 -> -> 1 `i `uc ]
-[; ;readTime.c: 30: INTCONbits.TMR0IE = 1;
-"30
+[; ;readTime.c: 27: INTCONbits.TMR0IE = 1;
+"27
 [e = . . _INTCONbits 0 5 -> -> 1 `i `uc ]
-[; ;readTime.c: 33: OpenTimer0(0b11111111&0b10111111&0b11011111&0b11111111);
-"33
+[; ;readTime.c: 28: OpenTimer0(0b11111111&0b10111111&0b11011111&0b11111111);
+"28
 [e ( _OpenTimer0 (1 -> & & & -> 255 `i -> 191 `i -> 223 `i -> 255 `i `uc ]
-[; ;readTime.c: 34: WriteTimer0(timer0);
-"34
+[; ;readTime.c: 29: WriteTimer0(timer0);
+"29
 [e ( _WriteTimer0 (1 _timer0 ]
-[; ;readTime.c: 35: }
-"35
+[; ;readTime.c: 30: }
+"30
 [e :UE 545 ]
 }
-"40
+"35
 [v _endTimer `(v ~T0 @X0 1 ef ]
 {
-[; ;readTime.c: 40: void endTimer(){
+[; ;readTime.c: 35: void endTimer(){
 [e :U _endTimer ]
 [f ]
-[; ;readTime.c: 41: CloseTimer0();
-"41
+[; ;readTime.c: 36: CloseTimer0();
+"36
 [e ( _CloseTimer0 ..  ]
-[; ;readTime.c: 42: }
-"42
+[; ;readTime.c: 37: }
+"37
 [e :UE 546 ]
-}
-"47
-[v _gets `(i ~T0 @X0 1 ef ]
-{
-[; ;readTime.c: 47: int gets(){
-[e :U _gets ]
-[f ]
-[; ;readTime.c: 48: return segundos;
-"48
-[e ) -> _segundos `i ]
-[e $UE 547  ]
-[; ;readTime.c: 49: }
-"49
-[e :UE 547 ]
-}
-"54
-[v _getms `(i ~T0 @X0 1 ef ]
-{
-[; ;readTime.c: 54: int getms(){
-[e :U _getms ]
-[f ]
-[; ;readTime.c: 55: return milisegundos;
-"55
-[e ) -> _milisegundos `i ]
-[e $UE 548  ]
-[; ;readTime.c: 56: }
-"56
-[e :UE 548 ]
-}
-"58
-[v _sets `(v ~T0 @X0 1 ef1`i ]
-{
-[; ;readTime.c: 58: void sets(int seg){
-[e :U _sets ]
-[v _seg `i ~T0 @X0 1 r1 ]
-[f ]
-[; ;readTime.c: 59: segundos = seg;
-"59
-[e = _segundos -> _seg `ui ]
-[; ;readTime.c: 60: }
-"60
-[e :UE 549 ]
-}
-"61
-[v _setms `(v ~T0 @X0 1 ef1`i ]
-{
-[; ;readTime.c: 61: void setms(int ms){
-[e :U _setms ]
-[v _ms `i ~T0 @X0 1 r1 ]
-[f ]
-[; ;readTime.c: 62: milisegundos = ms;
-"62
-[e = _milisegundos -> _ms `ui ]
-[; ;readTime.c: 63: }
-"63
-[e :UE 550 ]
 }

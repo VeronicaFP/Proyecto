@@ -13,11 +13,6 @@
 void timer0_isr(void);
 void startTimer(void);
 void endTimer(void);
-int gets(void);
-int getms(void);
-void sets(int seg);
-void setms(int ms);
-
 
 #ifdef	__cplusplus
 extern "C" {

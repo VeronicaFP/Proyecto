@@ -38,6 +38,46 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S197 . . . . . . . . ]
 "2690
 [v _PORTCbits `VS197 ~T0 @X0 0 e@3970 ]
+"4788
+[s S324 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S324 . TX9D TRMT BRGH SENDB SYNC TXEN TX9 CSRC ]
+"4798
+[s S325 :2 `uc 1 :1 `uc 1 ]
+[n S325 . . BRGH1 ]
+"4802
+[s S326 :7 `uc 1 :1 `uc 1 ]
+[n S326 . . CSRC1 ]
+"4806
+[s S327 :3 `uc 1 :1 `uc 1 ]
+[n S327 . . SENDB1 ]
+"4810
+[s S328 :4 `uc 1 :1 `uc 1 ]
+[n S328 . . SYNC1 ]
+"4814
+[s S329 :1 `uc 1 :1 `uc 1 ]
+[n S329 . . TRMT1 ]
+"4818
+[s S330 :6 `uc 1 :1 `uc 1 ]
+[n S330 . . TX91 ]
+"4822
+[s S331 :1 `uc 1 ]
+[n S331 . TX9D1 ]
+"4825
+[s S332 :5 `uc 1 :1 `uc 1 ]
+[n S332 . . TXEN1 ]
+"4829
+[s S333 :6 `uc 1 :1 `uc 1 ]
+[n S333 . . TX8_9 ]
+"4833
+[s S334 :1 `uc 1 ]
+[n S334 . TXD8 ]
+"4787
+[u S323 `S324 1 `S325 1 `S326 1 `S327 1 `S328 1 `S329 1 `S330 1 `S331 1 `S332 1 `S333 1 `S334 1 ]
+[n S323 . . . . . . . . . . . . ]
+"4837
+[v _TXSTAbits `VS323 ~T0 @X0 0 e@4012 ]
+"597 C:\Program Files (x86)\Microchip\xc8\v1.32\include\plib\usart.h
+[v _WriteUSART `(v ~T0 @X0 0 ef1`uc ]
 "103 C:\Program Files (x86)\Microchip\xc8\v1.32\include\stdlib.h
 [v _itoa `(*uc ~T0 @X0 0 ef3`*uc`i`i ]
 "599 C:\Program Files (x86)\Microchip\xc8\v1.32\include\plib\usart.h
@@ -4588,18 +4628,16 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;auxFunct.h: 11: void x_delay_ms(int x);
 [; ;uartFunct.h: 12: void init_UART();
 [; ;uartFunct.h: 13: void uart_isr();
+[; ;uartFunct.h: 14: void putiUSART(char *data);
 [; ;readTime.h: 13: void timer0_isr(void);
 [; ;readTime.h: 14: void startTimer(void);
 [; ;readTime.h: 15: void endTimer(void);
-[; ;readTime.h: 16: int gets(void);
-[; ;readTime.h: 17: int getms(void);
-[; ;readTime.h: 18: void sets(int seg);
-[; ;readTime.h: 19: void setms(int ms);
 [; ;gyro.h: 12: void I2C_read_byte_gyro(unsigned char reg,unsigned char *rdptr);
 [; ;gyro.h: 13: void I2C_read_data_gyro(unsigned char reg,unsigned char *rdptr);
 [; ;gyro.h: 14: void I2C_turn_on_gyro(void);
 [; ;gyro.h: 15: void I2C_write_reg_gyro(unsigned char reg, unsigned char valor);
 [; ;gyro.h: 16: void init_GYRO(void);
+[; ;gyro.h: 17: void stop_GYRO();
 [; ;i2cFunct.h: 12: void I2C_open(unsigned char sync_mode, unsigned char slew, unsigned char baud_clock);
 [; ;i2cFunct.h: 13: void I2C_send(unsigned char reg);
 [; ;i2cFunct.h: 14: void init_I2C();
@@ -4615,6 +4653,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;accmag.h: 74: void I2C_turn_on_mag(unsigned char data_rate,unsigned char mode);
 [; ;accmag.h: 75: void init_ACC();
 [; ;accmag.h: 76: void init_MAG();
+[; ;accmag.h: 77: void stop_ACC();
+[; ;accmag.h: 78: void stop_MAG();
 "10 main.c
 [v _temperature `c ~T0 @X0 1 e ]
 [i _temperature
@@ -4647,133 +4687,319 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _mid `uc ~T0 @X0 -> 0 `x e ]
 [i _mid
 :U ..
--> 32 `c
+-> 43 `c
 -> 0 `c
 ..
 ]
-[; ;main.c: 15: char mid[] = " ";
-"20
+[; ;main.c: 15: char mid[] = "+";
+"16
+[v _x `uc ~T0 @X0 -> 0 `x e ]
+[i _x
+:U ..
+-> 88 `c
+-> 0 `c
+..
+]
+[v _y `uc ~T0 @X0 -> 0 `x e ]
+[i _y
+:U ..
+-> 89 `c
+-> 0 `c
+..
+]
+[v _z `uc ~T0 @X0 -> 0 `x e ]
+[i _z
+:U ..
+-> 90 `c
+-> 0 `c
+..
+]
+[; ;main.c: 16: char x[] = "X", y[] = "Y", z[] = "Z";
+"17
+[v _start `uc ~T0 @X0 -> 0 `x e ]
+[i _start
+:U ..
+-> 35 `c
+-> 0 `c
+..
+]
+[; ;main.c: 17: char start[] = "#";
+"18
+[v _end `uc ~T0 @X0 -> 0 `x e ]
+[i _end
+:U ..
+-> 126 `c
+-> 0 `c
+..
+]
+[; ;main.c: 18: char end[] = "~";
+"23
 [v _readData `(v ~T0 @X0 1 ef ]
 {
-[; ;main.c: 20: void readData() {
+[; ;main.c: 23: void readData() {
 [e :U _readData ]
 [f ]
-[; ;main.c: 21: I2C_read_data_acc(0x28, &acc_x);
-"21
+[; ;main.c: 24: I2C_read_data_acc(0x28, &acc_x);
+"24
 [e ( _I2C_read_data_acc (2 , -> -> 40 `i `uc -> &U _acc_x `*uc ]
-[; ;main.c: 22: I2C_read_data_acc(0x2A, &acc_y);
-"22
+[; ;main.c: 25: I2C_read_data_acc(0x2A, &acc_y);
+"25
 [e ( _I2C_read_data_acc (2 , -> -> 42 `i `uc -> &U _acc_y `*uc ]
-[; ;main.c: 23: I2C_read_data_acc(0x2C, &acc_z);
-"23
+[; ;main.c: 26: I2C_read_data_acc(0x2C, &acc_z);
+"26
 [e ( _I2C_read_data_acc (2 , -> -> 44 `i `uc -> &U _acc_z `*uc ]
-[; ;main.c: 29: }
-"29
+[; ;main.c: 32: }
+"32
 [e :UE 544 ]
 }
-"31
+"34
 [v _main `(v ~T0 @X0 1 ef ]
 {
-[; ;main.c: 31: void main() {
+[; ;main.c: 34: void main() {
 [e :U _main ]
 [f ]
-[; ;main.c: 32: TRISC = 0b00000000;
-"32
-[e = _TRISC -> -> 0 `i `uc ]
-[; ;main.c: 33: LATC = 0b00000000;
-"33
-[e = _LATC -> -> 0 `i `uc ]
-[; ;main.c: 34: init_UART();
-"34
-[e ( _init_UART ..  ]
-[; ;main.c: 35: init_I2C();
+[; ;main.c: 35: TRISC = 0b00000000;
 "35
-[e ( _init_I2C ..  ]
-[; ;main.c: 37: init_ACC();
+[e = _TRISC -> -> 0 `i `uc ]
+[; ;main.c: 36: LATC = 0b00000000;
+"36
+[e = _LATC -> -> 0 `i `uc ]
+[; ;main.c: 37: init_UART();
 "37
-[e ( _init_ACC ..  ]
-[; ;main.c: 38: PORTCbits.RC0=1;;
+[e ( _init_UART ..  ]
+[; ;main.c: 38: init_I2C();
 "38
-[e = . . _PORTCbits 0 0 -> -> 1 `i `uc ]
-[; ;main.c: 39: PORTCbits.RC1=1;;
-"39
-[e = . . _PORTCbits 0 1 -> -> 1 `i `uc ]
-[; ;main.c: 41: while (1) {
+[e ( _init_I2C ..  ]
+[; ;main.c: 40: init_ACC();
+"40
+[e ( _init_ACC ..  ]
+[; ;main.c: 41: PORTCbits.RC0=1;;
 "41
+[e = . . _PORTCbits 0 0 -> -> 1 `i `uc ]
+[; ;main.c: 42: PORTCbits.RC1=1;;
+"42
+[e = . . _PORTCbits 0 1 -> -> 1 `i `uc ]
+[; ;main.c: 44: while (1) {
+"44
 [e :U 547 ]
 {
-"42
+"45
 }
 [e :U 546 ]
-"41
+"44
 [e $U 547  ]
 [e :U 548 ]
-[; ;main.c: 42: };
-[; ;main.c: 44: }
-"44
+[; ;main.c: 45: };
+[; ;main.c: 47: }
+"47
 [e :UE 545 ]
 }
-"46
-[v _imprimir `(v ~T0 @X0 1 ef ]
-{
-[; ;main.c: 46: void imprimir() {
-[e :U _imprimir ]
-[f ]
-[; ;main.c: 50: itoa(buf, acc_x, 10);
+"49
+[v _putintUSART `(v ~T0 @X0 1 ef1`*uc ]
 "50
-[e ( _itoa (3 , , &U _buf _acc_x -> 10 `i ]
-[; ;main.c: 66: putsUSART(&buf);
-"66
-[e ( _putsUSART (1 &U _buf ]
-[; ;main.c: 67: putsUSART(&enter);
-"67
-[e ( _putsUSART (1 &U _enter ]
-[; ;main.c: 68: }
-"68
+{
+[; ;main.c: 49: void putintUSART( char *data)
+[; ;main.c: 50: {
+[e :U _putintUSART ]
+"49
+[v _data `*uc ~T0 @X0 1 r1 ]
+"50
+[f ]
+[; ;main.c: 51: while((!TXSTAbits.TRMT));
+"51
+[e $U 550  ]
+[e :U 551 ]
+[e :U 550 ]
+[e $ ! != -> . . _TXSTAbits 0 1 `i -> -> -> 0 `i `Vuc `i 551  ]
+[e :U 552 ]
+[; ;main.c: 52: WriteUSART(*(data+1));
+"52
+[e ( _WriteUSART (1 *U + _data * -> -> 1 `i `x -> -> # *U _data `i `x ]
+[; ;main.c: 53: while((!TXSTAbits.TRMT));
+"53
+[e $U 553  ]
+[e :U 554 ]
+[e :U 553 ]
+[e $ ! != -> . . _TXSTAbits 0 1 `i -> -> -> 0 `i `Vuc `i 554  ]
+[e :U 555 ]
+[; ;main.c: 54: WriteUSART(*data);
+"54
+[e ( _WriteUSART (1 *U _data ]
+[; ;main.c: 56: }
+"56
 [e :UE 549 ]
 }
-[v F4980 `(v ~T0 @X0 1 tf ]
-"70
-[v _Interruption `IF4980 ~T0 @X0 1 e ]
+"58
+[v _imprimir `(v ~T0 @X0 1 ef ]
 {
-[; ;main.c: 70: void interrupt Interruption() {
+[; ;main.c: 58: void imprimir() {
+[e :U _imprimir ]
+[f ]
+[; ;main.c: 59: while((!TXSTAbits.TRMT));
+"59
+[e $U 557  ]
+[e :U 558 ]
+[e :U 557 ]
+[e $ ! != -> . . _TXSTAbits 0 1 `i -> -> -> 0 `i `Vuc `i 558  ]
+[e :U 559 ]
+[; ;main.c: 60: WriteUSART(35);
+"60
+[e ( _WriteUSART (1 -> -> 35 `i `uc ]
+[; ;main.c: 61: while((!TXSTAbits.TRMT));
+"61
+[e $U 560  ]
+[e :U 561 ]
+[e :U 560 ]
+[e $ ! != -> . . _TXSTAbits 0 1 `i -> -> -> 0 `i `Vuc `i 561  ]
+[e :U 562 ]
+[; ;main.c: 62: WriteUSART(88);
+"62
+[e ( _WriteUSART (1 -> -> 88 `i `uc ]
+[; ;main.c: 63: while((!TXSTAbits.TRMT));
+"63
+[e $U 563  ]
+[e :U 564 ]
+[e :U 563 ]
+[e $ ! != -> . . _TXSTAbits 0 1 `i -> -> -> 0 `i `Vuc `i 564  ]
+[e :U 565 ]
+[; ;main.c: 64: itoa(buf, acc_x, 10);
+"64
+[e ( _itoa (3 , , &U _buf _acc_x -> 10 `i ]
+[; ;main.c: 65: putsUSART(&buf);
+"65
+[e ( _putsUSART (1 &U _buf ]
+[; ;main.c: 67: while((!TXSTAbits.TRMT));
+"67
+[e $U 566  ]
+[e :U 567 ]
+[e :U 566 ]
+[e $ ! != -> . . _TXSTAbits 0 1 `i -> -> -> 0 `i `Vuc `i 567  ]
+[e :U 568 ]
+[; ;main.c: 68: WriteUSART(43);
+"68
+[e ( _WriteUSART (1 -> -> 43 `i `uc ]
+[; ;main.c: 69: while((!TXSTAbits.TRMT));
+"69
+[e $U 569  ]
+[e :U 570 ]
+[e :U 569 ]
+[e $ ! != -> . . _TXSTAbits 0 1 `i -> -> -> 0 `i `Vuc `i 570  ]
+[e :U 571 ]
+[; ;main.c: 70: WriteUSART(89);
+"70
+[e ( _WriteUSART (1 -> -> 89 `i `uc ]
+[; ;main.c: 71: while((!TXSTAbits.TRMT));
+"71
+[e $U 572  ]
+[e :U 573 ]
+[e :U 572 ]
+[e $ ! != -> . . _TXSTAbits 0 1 `i -> -> -> 0 `i `Vuc `i 573  ]
+[e :U 574 ]
+[; ;main.c: 73: itoa(buf, acc_y, 10);
+"73
+[e ( _itoa (3 , , &U _buf _acc_y -> 10 `i ]
+[; ;main.c: 74: putsUSART(&buf);
+"74
+[e ( _putsUSART (1 &U _buf ]
+[; ;main.c: 75: while((!TXSTAbits.TRMT));
+"75
+[e $U 575  ]
+[e :U 576 ]
+[e :U 575 ]
+[e $ ! != -> . . _TXSTAbits 0 1 `i -> -> -> 0 `i `Vuc `i 576  ]
+[e :U 577 ]
+[; ;main.c: 76: WriteUSART(43);
+"76
+[e ( _WriteUSART (1 -> -> 43 `i `uc ]
+[; ;main.c: 77: while((!TXSTAbits.TRMT));
+"77
+[e $U 578  ]
+[e :U 579 ]
+[e :U 578 ]
+[e $ ! != -> . . _TXSTAbits 0 1 `i -> -> -> 0 `i `Vuc `i 579  ]
+[e :U 580 ]
+[; ;main.c: 78: WriteUSART(90);
+"78
+[e ( _WriteUSART (1 -> -> 90 `i `uc ]
+[; ;main.c: 79: while((!TXSTAbits.TRMT));
+"79
+[e $U 581  ]
+[e :U 582 ]
+[e :U 581 ]
+[e $ ! != -> . . _TXSTAbits 0 1 `i -> -> -> 0 `i `Vuc `i 582  ]
+[e :U 583 ]
+[; ;main.c: 81: itoa(buf, acc_z, 10);
+"81
+[e ( _itoa (3 , , &U _buf _acc_z -> 10 `i ]
+[; ;main.c: 82: putsUSART(&buf);
+"82
+[e ( _putsUSART (1 &U _buf ]
+[; ;main.c: 83: while((!TXSTAbits.TRMT));
+"83
+[e $U 584  ]
+[e :U 585 ]
+[e :U 584 ]
+[e $ ! != -> . . _TXSTAbits 0 1 `i -> -> -> 0 `i `Vuc `i 585  ]
+[e :U 586 ]
+[; ;main.c: 84: WriteUSART(43);
+"84
+[e ( _WriteUSART (1 -> -> 43 `i `uc ]
+[; ;main.c: 85: while((!TXSTAbits.TRMT));
+"85
+[e $U 587  ]
+[e :U 588 ]
+[e :U 587 ]
+[e $ ! != -> . . _TXSTAbits 0 1 `i -> -> -> 0 `i `Vuc `i 588  ]
+[e :U 589 ]
+[; ;main.c: 86: WriteUSART(33);
+"86
+[e ( _WriteUSART (1 -> -> 33 `i `uc ]
+[; ;main.c: 103: }
+"103
+[e :UE 556 ]
+}
+[v F4984 `(v ~T0 @X0 1 tf ]
+"105
+[v _Interruption `IF4984 ~T0 @X0 1 e ]
+{
+[; ;main.c: 105: void interrupt Interruption() {
 [e :U _Interruption ]
 [f ]
-[; ;main.c: 72: if (INTCONbits.PEIE & PIR1bits.RCIF) {
-"72
-[e $ ! != & -> . . _INTCONbits 1 6 `i -> . . _PIR1bits 0 5 `i -> 0 `i 551  ]
+[; ;main.c: 107: if (INTCONbits.PEIE & PIR1bits.RCIF) {
+"107
+[e $ ! != & -> . . _INTCONbits 1 6 `i -> . . _PIR1bits 0 5 `i -> 0 `i 591  ]
 {
-[; ;main.c: 73: uart_isr();
-"73
+[; ;main.c: 108: uart_isr();
+"108
 [e ( _uart_isr ..  ]
-"74
+"109
 }
-[; ;main.c: 74: } else {
-[e $U 552  ]
-[e :U 551 ]
+[; ;main.c: 109: } else {
+[e $U 592  ]
+[e :U 591 ]
 {
-[; ;main.c: 75: if (INTCONbits.TMR0IE & INTCONbits.TMR0IF) {
-"75
-[e $ ! != & -> . . _INTCONbits 0 5 `i -> . . _INTCONbits 0 2 `i -> 0 `i 553  ]
+[; ;main.c: 110: if (INTCONbits.TMR0IE & INTCONbits.TMR0IF) {
+"110
+[e $ ! != & -> . . _INTCONbits 0 5 `i -> . . _INTCONbits 0 2 `i -> 0 `i 593  ]
 {
-[; ;main.c: 76: timer0_isr();
-"76
+[; ;main.c: 111: timer0_isr();
+"111
 [e ( _timer0_isr ..  ]
-[; ;main.c: 77: readData();
-"77
+[; ;main.c: 112: readData();
+"112
 [e ( _readData ..  ]
-[; ;main.c: 78: imprimir();
-"78
+[; ;main.c: 113: imprimir();
+"113
 [e ( _imprimir ..  ]
-"79
+"114
 }
-[e :U 553 ]
-"80
+[e :U 593 ]
+"115
 }
-[e :U 552 ]
-[; ;main.c: 79: }
-[; ;main.c: 80: }
-[; ;main.c: 81: }
-"81
-[e :UE 550 ]
+[e :U 592 ]
+[; ;main.c: 114: }
+[; ;main.c: 115: }
+[; ;main.c: 116: }
+"116
+[e :UE 590 ]
 }

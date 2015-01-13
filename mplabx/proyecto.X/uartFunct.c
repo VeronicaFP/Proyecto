@@ -8,25 +8,29 @@ void init_UART() {
     OpenUSART(config, spbrg); //API configures USART for desired parameters
     unsigned char baudconfig = BAUD_16_BIT_RATE & BAUD_AUTO_OFF & BAUD_IDLE_TX_PIN_STATE_HIGH&BAUD_IDLE_RX_PIN_STATE_HIGH;
     baudUSART(baudconfig);
-    INTCONbits.GIE = 1; //interrupciones globales(y alta prioridad)
-    INTCONbits.PEIE = 1; //interrupciones de perifericos(y baja prioridad)
+    INTCONbits.GIE = 1; //interrupciones globales
+    INTCONbits.PEIE = 1; //interrupciones de perifericos
     PIE1bits.RCIE = 1;//permite interrupciones usart en recepción
 }
 void uart_isr(){
     PIR1bits.RCIF=LOW;
     CaracterRx = ReadUSART();
-    putcUSART(CaracterRx);
     while(BusyUSART());
     if (CaracterRx == 83){
         startTimer();
-        LED_GREEN_Toggle();
     }else if(CaracterRx == 88){
         endTimer();
-        LED_RED_Toggle();
     }
     
 }
 
+void putiUSART(char *data){
+    while(BusyUSART());
+    putcUSART(*data);
+    *data--;
+    while(BusyUSART());
+    putcUSART(*data);
+}
 /*
 void uart_isr(){
    CaracterRx=ReadUSART();
